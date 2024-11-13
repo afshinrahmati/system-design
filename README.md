@@ -61,3 +61,12 @@ Vertical scaling (or "scaling up") and horizontal scaling (or "scaling out") are
 4) Load Balancing: By using a load balancer, you can distribute incoming traffic across multiple servers.
 5) Flexibility with Microservices or Distributed Architecture: High-traffic applications often benefit from a microservices or distributed architecture
 6) Cache layers (e.g., Redis or Memcached) can be added to reduce database load.
+
+
+
+# Load Balancing
+Load balancing is the practice of distributing computational workloads between two or more computers. On the Internet, load balancing is often employed to divide network traffic among several servers. 
+https://aws.amazon.com/what-is/load-balancing/
+## Type Of Load Balancing:
+1) DNS load balancing: 
+ you configure your domain to route network requests across a pool of resources on your domain. A domain can correspond to a website, a mail system, a print server, or another service that is made accessible through the internet. DNS load balancing is helpful for maintaining application availability and balancing network traffic across a globally distributed pool of resources. 
