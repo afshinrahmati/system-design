@@ -1,0 +1,3 @@
+cherry-pick ==> change a commit from to an other branch
+git merge ==> copy
+git Rebase ==> can see every change in one commit 
