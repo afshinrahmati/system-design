@@ -133,6 +133,8 @@ c-->Consistency , A ---> Availability, P --->  Partition Tolerance
 # Load Balancing
 Load balancing is the practice of distributing computational workloads between two or more computers. On the Internet, load balancing is often employed to divide network traffic among several servers. 
 https://aws.amazon.com/what-is/load-balancing/
+## What are load balancing algorithms?
+A load balancing algorithm is the set of rules that a load balancer follows to determine the best server for each of the different client requests. Load balancing algorithms fall into two main categories.
 👈 Round Robin Algorithm: In this algorithm, traffic is distributed equally among all available servers. This is a simple and efficient way to distribute the load, but it may lead to load imbalance, especially if the servers have different processing power or workload.
 Example: suppose you have a store website that has three servers. With the Round Robin algorithm, the traffic is divided equally between these three servers, just like a waiter who takes turns serving food to different tables.
 
@@ -140,7 +142,7 @@ Example: suppose you have a store website that has three servers. With the Round
 👈 Weighted Round Robin Algorithm: This algorithm allows you to assign a weight to each server. This weight indicates the share of traffic that each server should receive. This can be useful to ensure that stronger servers receive more traffic.
 Example: suppose you have a company that has two servers, a strong server and a weaker server. With the Weighted Round Robin algorithm, you give a stronger server more weight to handle more traffic, just like a more experienced waiter handling more orders.
 
-Least Connections Algorithm: This algorithm sends traffic to the server that has the least number of active connections. This evenly distributes the traffic between the servers and prevents any server from being overloaded.
+👈 Least Connections Algorithm: This algorithm sends traffic to the server that has the least number of active connections. This evenly distributes the traffic between the servers and prevents any server from being overloaded.
 Example: suppose you have an online chat service that has thousands of users. With the Least Connections algorithm, traffic is sent to the server with the least number of connected users, just like a waiter looking for the table with the fewest customers.
 
 👈 Weighted Least Connections Algorithm: This algorithm is similar to Least Connections, except that it allows you to assign a weight to each server.
@@ -152,6 +154,11 @@ Example: Suppose you have an online game that requires fast response time. With 
 👈 Weighted Response Time Algorithm: This algorithm is similar to Least Response Time, except that it allows you to assign a weight to each server.
 
 👈 IP/Hash-Based Algorithm: The IP address of each visitor acts as a "key" and is converted into a number using the hash function. This number is assigned to a specific server on the website and the traffic of that visitor is sent to that server.
+
+
+# Database_Replication
+
+
 
 # REVERSE AND FORWARD PROXY
 ![Alt text](./forwardProxy.jpeg)
