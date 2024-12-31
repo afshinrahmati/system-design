@@ -1,4 +1,6 @@
 # system-design
+System design is the process of defining the elements of a system, as well as their interactions and relationships, in order to satisfy a set of specified requirements.
+# ⭐ Blue Book ⭐
 # Singleserversetup:
 ![Alt text](./single.png)
 1. Users access websites through domain names, such as api.mysite.com. Usually, the
@@ -50,7 +52,7 @@ Service-oriented architecture allows different services to transfer data and exe
 ![Alt text](./api-getway.webp)
 * API Gateway is a user interface that is placed between Client and Service and creates an abstraction level between them. With API Gateway, the Client no longer needs to interact with several services to receive the required data. It sends its request to the API Gateway, and it is the API Gateway that determines which services it should apply to in order to respond to the Client's request, and the services send their response to the API Gateway, and the API Gateway sends the final response to the Client.
 * It is responsible for managing and routing requests from clients to the appropriate services, often while adding additional
- functionality like security, load balancing, and analytics.
+ functionality like security, load balancing, and analytics.‍
  * Routing,Authentication and Authorization,Rate Limiting and Throttling,Load Balancing,Protocol Translation,Caching,Request and Response Transformation
 
  * An API Gateway is a management tool that acts as a single entry point for all client requests to various microservices or APIs in a system.
@@ -109,8 +111,8 @@ Vertical scaling (or "scaling up") and horizontal scaling (or "scaling out") are
 2) ‌Increased operational overhead with orchestration, data consistency, and failure handling.
 3) Can lead to higher latency if poorly implemented due to the need to synchronize data across multiple nodes.
 
-### Vertical Scaling is often suitable for small to medium applications with low traffic, where adding more power to a single server can handle the load effectively.
-### Horizontal Scaling is typically preferred for large applications or systems that need high availability and fault tolerance. Web applications, microservices, and big data systems usually rely on horizontal scaling to meet demand dynamically.
+* Vertical Scaling is often suitable for small to medium applications with low traffic, where adding more power to a single server can handle the load effectively.
+* Horizontal Scaling is typically preferred for large applications or systems that need high availability and fault tolerance. Web applications, microservices, and big data systems usually rely on horizontal scaling to meet demand dynamically.
 ## Hight Traffic ==> 
 1) Scalability Horizontal scaling the load across multiple machines.
 2) Fault Tolerance and High Availability   With multiple servers in a horizontal setup, the application can remain operational even if one server fails. This redundancy ensures that traffic can still be managed smoothly without a single point of failure.
@@ -120,6 +122,10 @@ Vertical scaling (or "scaling up") and horizontal scaling (or "scaling out") are
 6) Cache layers (e.g., Redis or Memcached) can be added to reduce database load.
 
 
+
+
+
+# ⭐ MasHti ⭐
 # CA,CP,AP
 c-->Consistency , A ---> Availability, P --->  Partition Tolerance
 1) Consistency --> This principle is pointing out that if you have several servers and have scaled it horizontally, all content in all servers must be the same. It means that no server is different from another
@@ -156,9 +162,14 @@ Example: Suppose you have an online game that requires fast response time. With 
 👈 IP/Hash-Based Algorithm: The IP address of each visitor acts as a "key" and is converted into a number using the hash function. This number is assigned to a specific server on the website and the traffic of that visitor is sent to that server.
 
 
-# Database_Replication
+# Database_Replication<Replica>
+Database replication can be use in many database management.
+usually with master/slave relationship between ther original(master) and the copies(slaves).
+master Database generally support Write Operations.A Slave database get copies of the data from the master and use for read
+Master ==> Insert,Delete,update
+Slave ==> find
 
-
+![Alt text](./database-replications.png)
 
 # REVERSE AND FORWARD PROXY
 ![Alt text](./forwardProxy.jpeg)
@@ -424,3 +435,26 @@ In fact, in the Serverless model, cloud service providers such as AWS, Azure and
 ## Type Of Load Balancing:
 1) DNS load balancing: 
  you configure your domain to route network requests across a pool of resources on your domain. A domain can correspond to a website, a mail system, a print server, or another service that is made accessible through the internet. DNS load balancing is helpful for maintaining application availability and balancing network traffic across a globally distributed pool of resources. 
+
+
+
+
+# ⭐ ⭐
+ # Microservices
+* Microservices architecture allows each part of the project to function independently. Below are key
+## principles and patterns:
+ 1) ##  Independent Deployment
+ * Each part of the system should be deployable and updatable independently without affecting other parts of the project.
+ 2) ## Business Domain or DDD (Domain-Driven Design)
+ * Each service should have a distinct domain, adhering to the principles of domain-driven design.
+ 3) ##  State Management
+ * Each microservice should maintain its own state and have its own database to avoid coupling.
+ 4) ## Low Coupling & High Cohesion
+ * Dependencies should be well-managed to ensure that changes in one service do not cause errors in other services.
+ 5) ## Size
+ * Microservices should be neither too large nor too small. The size should be manageable and fit easily within a developer's mental model.
+ 6) ## Scaleable
+ * Services should be scalable, such as using replication (e.g., creating 100 pods for a service) to handle increased load.
+ * Consider implementing the 12-factor app principles for cloud-native applications.
+ 7) ## BulkHead Pattern
+ * if an issue occurs in one service, it should be isolated and not impact other services.
