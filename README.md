@@ -1,11 +1,12 @@
 # system-design
-System design is the process of defining the elements of a system, as well as their interactions and relationships, in order to satisfy a set of specified requirements.
-# ⭐ Blue Book ⭐
+* decided Architecture(Layered Architecture, Monolithic vs Microservices,Serverless,Containerized ) and Interfaces(API,..) , Infrastructure(Hosting,Database,Load Balancers,Caching) abd  Technology Stack(Monitoring & Logging,CI/CD Pipeline)
+* System design is the process of defining the elements of a system, as well as their interactions and relationships, in order to satisfy a set of specified requirements.
 # Singleserversetup:
 ![Alt text](./single.png)
 1. Users access websites through domain names, such as api.mysite.com. Usually, the
 Domain Name System (DNS) is a paid service provided by 3rd parties and not hosted by
 our servers.
+![Alt text](./DNS.png)
 2. Internet Protocol (IP) address is returned to the browser or mobile app. In the example,
 IP address 15.125.23.214 is returned.
 3. Once the IP address is obtained, Hypertext Transfer Protocol (HTTP) [1] requests are
@@ -85,10 +86,11 @@ operations are generally not supported in non-relational databases.
 • Your data are unstructured, or you do not have any relational data.
 • You only need to serialize and deserialize data (JSON, XML, YAML, etc.).
 • You need to store a massive(large) amount of data.
-# Vertical Scaling & Horizontal Scaling:
+# STEP 1
+##  Vertical Scaling & Horizontal Scaling:
 Vertical scaling (or "scaling up") and horizontal scaling (or "scaling out") are two approaches to improve system capacity and performance. Here’s a breakdown of the two methods:
 1. Vertical Scaling (Scaling Up)
-*Definition: Increasing the power of a single server or machine by adding more resources (CPU, RAM, storage, etc.).
+* Definition: Increasing the power of a single server or machine by adding more resources (CPU, RAM, storage, etc.).
 * Example: Upgrading from a 16 GB RAM, 4-core machine to a 64 GB RAM, 16-core machine.
 * Pros:
 1) Simpler to implement since you’re just upgrading a single machine.
@@ -121,9 +123,156 @@ Vertical scaling (or "scaling up") and horizontal scaling (or "scaling out") are
 5) Flexibility with Microservices or Distributed Architecture: High-traffic applications often benefit from a microservices or distributed architecture
 6) Cache layers (e.g., Redis or Memcached) can be added to reduce database load.
 
+# Load Balancing
+
+Load balancing is the practice of distributing computational workloads between two or more computers. On the Internet, load balancing is often employed to divide network traffic among several servers. 
+https://aws.amazon.com/what-is/load-balancing/
+##  What are load balancing algorithms?
+A load balancing algorithm is the set of rules that a load balancer follows to determine the best server for each of the different client requests. Load balancing algorithms fall into two main categories.
+### Cofig Of LoadBalancing
+1) # Round Robin Algorithm:
+* In this algorithm, traffic is distributed equally among all available servers. This is a simple and efficient way to distribute the load, but it may lead to load imbalance, especially if the servers have different processing power or workload.
+Example: suppose you have a store website that has three servers. With the Round Robin algorithm, the traffic is divided equally between these three servers, just like a waiter who takes turns serving food to different tables.
 
 
+2) # Weighted Round Robin Algorithm: 
+* This algorithm allows you to assign a weight to each server. This weight indicates the share of traffic that each server should receive. This can be useful to ensure that stronger servers receive more traffic.
+Example: suppose you have a company that has two servers, a strong server and a weaker server. With the Weighted Round Robin algorithm, you give a stronger server more weight to handle more traffic, just like a more experienced waiter handling more orders.
 
+3) # Least Connections Algorithm: 
+* This algorithm sends traffic to the server that has the least number of active connections. This evenly distributes the traffic between the servers and prevents any server from being overloaded.
+Example: suppose you have an online chat service that has thousands of users. With the Least Connections algorithm, traffic is sent to the server with the least number of connected users, just like a waiter looking for the table with the fewest customers.
+
+4) # Weighted Least Connections Algorithm: 
+* This algorithm is similar to Least Connections, except that it allows you to assign a weight to each server.
+
+
+5) # Least Response Time Algorithm: 
+* This algorithm sends traffic to the server with the fastest response time. This helps ensure users have the fastest experience possible.
+Example: Suppose you have an online game that requires fast response time. With the Least Response Time algorithm, traffic is sent to the server with the fastest response time, just like a waiter preparing the fastest order.
+
+6) # Weighted Response Time Algorithm: 
+* This algorithm is similar to Least Response Time, except that it allows you to assign a weight to each server.
+
+7) # IP/Hash-Based Algorithm:
+* The IP address of each visitor acts as a "key" and is converted into a number using the hash function. This number is assigned to a specific server on the website and the traffic of that visitor is sent to that server.
+
+# Database_Replication<Replica>
+* Database replication can be use in many database management.
+* usually with master/slave relationship between ther original(master) and the copies(slaves).
+* master Database generally support Write Operations.A Slave database get copies of the data from the master and use for read
+* Master(leader , primary) ==> Insert,Delete,update and it handlt to update an other databases
+* Slave(secondary) ==> find
+* for update the secondary database we have two method: sync(awit that all db say yeah we get this data ; - if one db is faild all service destroy) Or async (+ speed is good becasuse do not wait;- mamby one db has less data )
+the best method is ===> we imepelement two db with sync and other db with on of them are async.
+* in bacnk we havto implemenet sync but in messanger is good to use async
+![Alt text](./database-replications.png)
+![Alt text](./replica.png)
+
+
+# Caching
+* write and read in desk is very slow for incress we have to use some database that work directly on the ram and they are temporay so we can not write all data in ram
+
+* Caching is a technique that is used to improve the performance and increase the scalability of systems. In caching, the data that is used the most is stored in a faster memory (such as hashtag#RAM) so that they can be accessed faster. These caching techniques are very common in the world of hashtag programming.
+
+1) ##  Cache-Aside method
+- In this method, the program must put the data in the cache by itself.
+- If the data is not in the cache, the program takes the database from the hashtag# and puts it in the cache for "next use".
+- This method is more useful when most of the system load is on the reader and the data does not change much.
+🔺For example, the profile page of users:
+```
+def get_user_profile(user_id):
+ profile = cache.get(f"user_profile:{user_id}")
+ if profile is None:
+ profile = database.get_user_profile(user_id)
+ cache.set(f"user_profile:{user_id}", profile)
+ return profile
+```
+2) ## Read-through method
+- In this method, the cache is like an intermediary between the program and the database and receives read requests.
+- When you want data, the cache first checks if it has it and gives it, if it doesn't have it, it takes it from the database and stores it in the cache, and then sends it.
+- This method makes programming easier because the cache itself does the work of receiving and storing data.
+🔺 For example, receiving product information:
+```
+product_details = cache.get(f"product_details:{product_id}")
+return product_details
+
+```
+
+3) ## Write-through method
+- read is very nexxesary to this method like 
+- In this method, both reading and writing operations are done through cache.
+- When you "add or update" data in the database, it is stored in the cache at the same time.
+- This method ensures that the cache and database are always in sync, but it may be slower due to writing data twice.
+
+For example, product inventory management:
+
+```
+def update_stock_level(product_id, new_stock_level):
+ database.update_stock_level(product_id, new_stock_level)
+ cache.set(f"stock_level:{product_id}", new_stock_level)
+```
+4) ##  Write-Around method
+ - write is very important.
+- In this method, the write operation is performed directly in the database and bypasses the cache.
+- The first reading operation checks the cache, if there is no data, it takes it from the database and stores it in the cache.
+- This method reduces the load of writing from the cache and is suitable for when you write a lot of data.
+
+🔺 For example, updating or adding blog posts:
+
+```
+def update_blog_post(post_id, content):
+ database.update_blog_post(post_id, content)
+def get_blog_post(post_id):
+ post = cache.get(f"blog_post:{post_id}")
+ if post is None:
+ post = database.get_blog_post(post_id)
+ cache.set(f"blog_post:{post_id}", post)
+ return post
+```
+5) ## Write-Back method
+- In this method, you first write the data in the cache and then write it to the database asynchronously.
+- This method can increase the writing speed and reduce the delay, but if the cache is destroyed before writing to the database, there is a risk of data loss.
+
+For example, user analytics:
+
+```
+def log_user_activity(user_id, activity):
+
+ cache.set(f"user_activity:{user_id}", activity)
+ schedule_async_db_write(user_id, activity)
+
+def schedule_async_db_write(user_id, activity):
+
+ database.write_user_activity(user_id, activity)
+```
+6) ## Least Frequen Used(LFU)
+* that datat delete that use very less , like in phone those word show u when typing
+7) ## Least Recently Used (LRU):
+* the old data delete automaticly
+
+# REVERSE AND FORWARD PROXY
+![Alt text](./forwardProxy.jpeg)
+* load balancing is type of proxy
+* In general, the Forward proxy takes care of the user and controls the traffic, while the Reverse proxy monitors the server and starts its work.
+
+## Forward Proxy:
+* On the user's side and he is aware of it, something like VPN but with different functionality
+* Take care of security and where it goes on the internet.
+* It can even set the main address of the user to be anonymous.
+* It is useful for organizations to control their employees and the sites they go to.
+## Reverse Proxy:
+* Behind the server and acts like a protector.
+* It takes user requests, sends them to the right server and returns the answer.
+* Keeps the identity of the main server secret and increases its security.
+* It also helps server performance because it can distribute the load between several servers (load balancing) and keep things that have been requested before (caching) so that it reaches the user faster next time.
+
+
+# CDN
+![Alt text](./cdn.png)
+* that is part part for each location and stor the satic file like images/video/.... on there and client connect to this because it is closer and just for dynamic request handle to the service
++ speed up
++ can impelement a lot of cdn cloudefare has this service
 
 # ⭐ MasHti ⭐
 # CA,CP,AP
@@ -136,58 +285,9 @@ c-->Consistency , A ---> Availability, P --->  Partition Tolerance
 🔴 AP selection: the system can continue to work during network failure.
 
 🔺👈 Important point: We never have CA in the real world because there is always a network outage.
-# Load Balancing
-Load balancing is the practice of distributing computational workloads between two or more computers. On the Internet, load balancing is often employed to divide network traffic among several servers. 
-https://aws.amazon.com/what-is/load-balancing/
-## What are load balancing algorithms?
-A load balancing algorithm is the set of rules that a load balancer follows to determine the best server for each of the different client requests. Load balancing algorithms fall into two main categories.
-👈 Round Robin Algorithm: In this algorithm, traffic is distributed equally among all available servers. This is a simple and efficient way to distribute the load, but it may lead to load imbalance, especially if the servers have different processing power or workload.
-Example: suppose you have a store website that has three servers. With the Round Robin algorithm, the traffic is divided equally between these three servers, just like a waiter who takes turns serving food to different tables.
 
 
-👈 Weighted Round Robin Algorithm: This algorithm allows you to assign a weight to each server. This weight indicates the share of traffic that each server should receive. This can be useful to ensure that stronger servers receive more traffic.
-Example: suppose you have a company that has two servers, a strong server and a weaker server. With the Weighted Round Robin algorithm, you give a stronger server more weight to handle more traffic, just like a more experienced waiter handling more orders.
 
-👈 Least Connections Algorithm: This algorithm sends traffic to the server that has the least number of active connections. This evenly distributes the traffic between the servers and prevents any server from being overloaded.
-Example: suppose you have an online chat service that has thousands of users. With the Least Connections algorithm, traffic is sent to the server with the least number of connected users, just like a waiter looking for the table with the fewest customers.
-
-👈 Weighted Least Connections Algorithm: This algorithm is similar to Least Connections, except that it allows you to assign a weight to each server.
-
-
-Least Response Time Algorithm: This algorithm sends traffic to the server with the fastest response time. This helps ensure users have the fastest experience possible.
-Example: Suppose you have an online game that requires fast response time. With the Least Response Time algorithm, traffic is sent to the server with the fastest response time, just like a waiter preparing the fastest order.
-
-👈 Weighted Response Time Algorithm: This algorithm is similar to Least Response Time, except that it allows you to assign a weight to each server.
-
-👈 IP/Hash-Based Algorithm: The IP address of each visitor acts as a "key" and is converted into a number using the hash function. This number is assigned to a specific server on the website and the traffic of that visitor is sent to that server.
-
-
-# Database_Replication<Replica>
-Database replication can be use in many database management.
-usually with master/slave relationship between ther original(master) and the copies(slaves).
-master Database generally support Write Operations.A Slave database get copies of the data from the master and use for read
-Master ==> Insert,Delete,update
-Slave ==> find
-
-![Alt text](./database-replications.png)
-
-# REVERSE AND FORWARD PROXY
-![Alt text](./forwardProxy.jpeg)
-The concept of Forward Proxy:
-
-* On the user's side and he is aware of it, something like VPN but with different functionality
-* Take care of security and where it goes on the internet.
-* It can even set the main address of the user to be anonymous.
-* It is useful for organizations to control their employees and the sites they go to.
-
-Concept of Reverse Proxy:
-
-* Behind the server and acts like a protector.
-* It takes user requests, sends them to the right server and returns the answer.
-* Keeps the identity of the main server secret and increases its security.
-* It also helps server performance because it can distribute the load between several servers (load balancing) and keep things that have been requested before (caching) so that it reaches the user faster next time.
-
-In general, the Forward proxy takes care of the user and controls the traffic, while the Reverse proxy monitors the server and starts its work.
 # Race Condition
 5 months ago
 
@@ -240,81 +340,7 @@ For example, the shard related to clients can be assigned to a server with high 
 This method can significantly improve the performance and scalability of the database, especially for systems that store large amounts of different data.
 
 be a handful
-# Caching
-Caching is a technique that is used to improve the performance and increase the scalability of systems. In caching, the data that is used the most is stored in a faster memory (such as hashtag#RAM) so that they can be accessed faster. These caching techniques are very common in the world of hashtag programming.
 
-👈 1. Cache-Aside method
-- In this method, the program must put the data in the cache by itself.
-- If the data is not in the cache, the program takes the database from the hashtag# and puts it in the cache for "next use".
-- This method is more useful when most of the system load is on the reader and the data does not change much.
-
-🔺 For example, the profile page of users:
-
-```def get_user_profile(user_id):
-
- profile = cache.get(f"user_profile:{user_id}")
-
- if profile is None:
- profile = database.get_user_profile(user_id)
- cache.set(f"user_profile:{user_id}", profile)
- return profile
-```
-
-👈 2. Read-through method
-- In this method, the cache is like an intermediary between the program and the database and receives read requests.
-- When you want data, the cache first checks if it has it and gives it, if it doesn't have it, it takes it from the database and stores it in the cache, and then sends it.
-- This method makes programming easier because the cache itself does the work of receiving and storing data.
-
-🔺 For example, receiving product information:
-
-```product_details = cache.get(f"product_details:{product_id}")
-return product_details
-```
-
-👈 3. Write-through method
-- In this method, both reading and writing operations are done through cache.
-- When you "add or update" data in the database, it is stored in the cache at the same time.
-- This method ensures that the cache and database are always in sync, but it may be slower due to writing data twice.
-
-For example, product inventory management:
-
-```def update_stock_level(product_id, new_stock_level):
- database.update_stock_level(product_id, new_stock_level)
- cache.set(f"stock_level:{product_id}", new_stock_level)
-```
-👈 4. Write-Around method
-- In this method, the write operation is performed directly in the database and bypasses the cache.
-- The first reading operation checks the cache, if there is no data, it takes it from the database and stores it in the cache.
-- This method reduces the load of writing from the cache and is suitable for when you write a lot of data.
-
-🔺 For example, updating or adding blog posts:
-
-```def update_blog_post(post_id, content):
- database.update_blog_post(post_id, content)
-
-def get_blog_post(post_id):
- post = cache.get(f"blog_post:{post_id}")
-
- if post is None:
- post = database.get_blog_post(post_id)
- cache.set(f"blog_post:{post_id}", post)
-
- return post
-```
-👈 5. Write-Back method
-- In this method, you first write the data in the cache and then write it to the database asynchronously.
-- This method can increase the writing speed and reduce the delay, but if the cache is destroyed before writing to the database, there is a risk of data loss.
-
-For example, user analytics:
-
-def log_user_activity(user_id, activity):
-
- cache.set(f"user_activity:{user_id}", activity)
- schedule_async_db_write(user_id, activity)
-
-def schedule_async_db_write(user_id, activity):
-
- database.write_user_activity(user_id, activity)
 # DDD
 In software engineering, "Domain Driven Design" (DDD) is a design method introduced by Eric Evans. The goal of this method is to create a common understanding of the work area between programmers and strategists
 
