@@ -14,29 +14,54 @@ sent directly to your web server.
 4. The web server returns HTML pages or JSON response for rendering.
 
 # API(Application Programming Interface)
+![Alt text](./API.png)
 * is a set of rules, protocols, and tools that allows different software applications to communicate and interact with each other.
 * APIs enable integration between different systems, platforms, or services
 * Web APIs: Facilitate communication over the internet (e.g., REST, GraphQL, SOAP).
 ## REST(Representational State Transfer)
+* it is goof fot CRUD  
 * is an architectural style for designing networked applications.
 * It defines principles that allow systems to communicate over the internet in a simple and scalable way. REST is commonly used for building web APIs.
-## RPC(Remote Procedure call)
-* Allows executing procedures or functions on a remote server as if they were local. they serialize very nice
-* High-performance services (e.g., gRPC).
+- for real-time streaimg data it is not good
+## GRPC(google Remote Procedure call)
+* it base on  Http/2 so it is fast but rest base on http so it is slow
+- some browsers do not support it .
++ it is contract base that mean you difine some role and other sevice impleent with this.
++ it serialize the data by buffer that mean it change the data to binary so this method less the size of the data and can be good effiect on the traffic.
++ it do not related to any language.
+* High-performance services (e.g., gRPC) that mean the query is alot.
 * Strongly typed service communication.
+* it is good for microservice becasuse all service can talk with each other on the less load
 ## GraphQL
-A query language for APIs that allows clients to request exactly the data they need.
+* A query language for APIs that allows clients to request exactly the data they need.
+* client can ask for specific data no more feching data
 ## SOAP(simple object access)
-XML-based protocol with strict standards.
-##  Event-Driven Architecture
-Uses message brokers like RabbitMQ, Kafka, or Redis.
-## Microservices
-Services communicate using REST, gRPC, or messaging systems.
+* XML-based protocol with strict standards and it is good for enterprise application
+* it is good for financial and payment gateway because it is security and reliablitiy
+##  Event-Driven Architecture(webhook)
+* Uses message brokers like RabbitMQ, Kafka, or Redis.
+
+
+# Socket Gateway
+* it is good for live-chat real-time gamiang
+A Socket Gateway is designed to manage real-time, bi-directional communication between clients and backend services using WebSocket or similar protocols.
+* Establishes a persistent connection for sending and receiving data in real time.
+* Used for event-driven systems where latency is critical
+* Multiple Transports,Chat apps,Online multiplayer games,Live stock price tickers.
+* Manages WebSocket connections , WebSocket, MQTT(Protocol),Bi-directional, real-time,Real-time communication
+##### what it them?
 ## P2P
 Peer-to-peer network, abbreviated as P2P, is a network consisting of a number of computers that are connected to each other through
 the Internet using a distributed architecture. Each member of this network is called a node. Nodes are usually defined with the same power and duty. 
 Files are shared between network nodes without the need for a central server.
 ## CQRS(Command Query Responsibility Segregation)
+![Alt text](./cQrS.png)
+* imagin we have serverl service and each service has own database and we do not have main database and we want to get order 
+in order we need client account and Dellivery so we have to query for each part and in `application layer` do operatio and it is bad some query is so Hight and bad 
+so it is good we use a nice method it is CQRS so we create a replica databse for search that in there we have the data  
+like client account and Dellivery and we do not have write just read and we can handle it with (`CDC` change Data Capture when we have chnage on the db plese send to the replica databse)
++ we do not operation on application layer.
+- Eventual consistency : we have Delay to get new data but we have a good performance on application
 * Commands ==> just do a task and not return any thing
 * Queries ==> do a query and return any thing but not change a state
 * CQRS stands for Command and Query Responsibility Segregation, a pattern that separates read and update operations for a data store.
@@ -61,12 +86,7 @@ Service-oriented architecture allows different services to transfer data and exe
 * Manages REST/GraphQL APIs	,HTTP/HTTPS(Protocol),Request-response,Microservices routing, APIs,	Load balanced API calls
 
 
-# Socket Gateway
-A Socket Gateway is designed to manage real-time, bi-directional communication between clients and backend services using WebSocket or similar protocols.
-* Establishes a persistent connection for sending and receiving data in real time.
-* Used for event-driven systems where latency is critical
-* Multiple Transports,Chat apps,Online multiplayer games,Live stock price tickers.
-* Manages WebSocket connections , WebSocket, MQTT(Protocol),Bi-directional, real-time,Real-time communication
+
 
 
 # Database
@@ -270,10 +290,57 @@ def schedule_async_db_write(user_id, activity):
 
 # CDN
 ![Alt text](./cdn.png)
-* that is part part for each location and stor the satic file like images/video/.... on there and client connect to this because it is closer and just for dynamic request handle to the service
+* that is part part for each location and stor the satic file like images/video/css/javascript because there change very late.... on there and client connect to this because it is closer and just for dynamic request handle to the service
 + speed up
 + can impelement a lot of cdn cloudefare has this service
++ request on server will less.
 
+
+
+
+
+
+# sharding
+* Let me explain sharding to you simply. Suppose you have a hashtag #online_store with a lot of customer information, orders and products. As the number of users and purchases increases, this amount of information becomes too much for a single server and it cannot handle it well. Here is a cool solution called sharding.
+* In fact, sharding is a kind of partitioning in which the database is `divided into smaller and more convenient pieces called shards` . Each shard keeps a part of information and all shards together form the whole database. This makes the whole system faster and more manageable.
+
+* it happend Horizontal scaling.
++ beacause you have a part part db in each service so you have small place for storing data
+- if we want to join if one datat is a table an other data is b table it is bad forexamle admin-dashboard
+
+👈 Let me give an example so that you understand better:
+Suppose you categorized your customers based on their location, for example, North America, Europe and Asia. Each shard keeps the information of customers of a specific area. For example:
+
+* First Shard or Shard 1: North America (including customer information, orders and products of North American customers)
+* Second shard or Shard 2: Europe (including customer information, orders and products of European customers)
+* The third shard or Shard 3: Asia (including customer information, orders and products of Asian customers)
+
+* When a user enters the site, the system selects the appropriate shard for the query based on the location or other factors. For example, if a user enters from Europe, the system sends all requests related to that user to the European shard.
+## consistent hashing
+* a special kind of hashing technique such that when a hash table is resized,
+
+# Stateless & Stateful
+## Statefull
+* If some data, such as a session, is stored on the `server`, the system is considered `stateful`. In this case, a `load balancer` must ensure that requests from the same client are routed to the exact same server where the session data is stored. This process is often referred to as session stickiness or sticky sessions.
+## Stateless
+* we creare a storage and all the server use it or in memory-storage cache.
+* Stateless systems are easier to scale horizontally because any server in the cluster can handle any request.
+
+
+# message_broker
+* It is a software for communication between different systems, services, or applications by managing the sending , receiving, and routing of messages.
++ user want to chnage photo so he/she do not wait for handling it and it put on the message broker and it handle it.
++ `Asynchronous` Communication: Producers and consumers don’t need to interact directly or at the same time. Messages are queued in the broker until the consumer processes them.
++ `Reliability` Message brokers ensure that messages are not lost, even in cases of system failure, by storing them in queues.
++ `Decoupling` if consumer has error it do not effiect on the producer.
++ `Scalability` A message broker can handle high volumes of messages, allowing systems to scale horizontally.
++ `Routing` Brokers can intelligently route messages to specific consumers based on rules or topics (e.g., pub/sub patterns).
+
+>> `Redis`: Pub/Sub: Lightweight message broker functionality in Redis.
+>> `RabbitMQ` : Known for its robustness and flexibility in routing.
+>> `Apache` Kafka: Designed for high-throughput and distributed event streaming.
+>> `ActiveMQ`: An open-source, multi-protocol broker.
+>> `Amazon SQS`: A fully managed message queuing service by AWS.
 # ⭐ MasHti ⭐
 # CA,CP,AP
 c-->Consistency , A ---> Availability, P --->  Partition Tolerance
@@ -310,36 +377,6 @@ Finally, the balance of the account is 4 million tomans, but two to 6 million we
 To avoid this problem, banks use locking and atomic transactions, which means that each transaction is done separately without interfering with the others. In this way, such a mistake will not happen again.
 
 These competitive conditions can lead to serious financial problems and big disputes. To avoid this problem, banks use locking techniques and atomic transactions to make sure that each transaction is done separately without interfering with other transactions.
-
-# sharding
-Let me explain sharding to you simply. Suppose you have a hashtag #online_store with a lot of customer information, orders and products. As the number of users and purchases increases, this amount of information becomes too much for a single server and it cannot handle it well. Here is a cool solution called sharding.
-
-In fact, sharding is a kind of partitioning in which the database is divided into smaller and more convenient pieces called shards. Each shard keeps a part of information and all shards together form the whole database. This makes the whole system faster and more manageable.
-
-👈 Let me give an example so that you understand better:
-Suppose you categorized your customers based on their location, for example, North America, Europe and Asia. Each shard keeps the information of customers of a specific area. For example:
-
-- First Shard or Shard 1: North America (including customer information, orders and products of North American customers)
-- Second shard or Shard 2: Europe (including customer information, orders and products of European customers)
-- The third shard or Shard 3: Asia (including customer information, orders and products of Asian customers)
-
-When a user enters the site, the system selects the appropriate shard for the query based on the location or other factors. For example, if a user enters from Europe, the system sends all requests related to that user to the European shard.
-
-With sharding, you divide the entire workload between several servers and make everything faster and more manageable. Each shard works separately and you can expand the system whenever you want by adding more shards (horizontal scaling). In addition, if one shard encounters a problem, the rest of the shards will not be affected and the whole system will continue to work.
-
-👈 Another example of sharding that is not related to geography can be to categorize information based on data type. For example:
-
-- Shard 1 or Shard 1: including all information related to customers, such as name, email, address and phone number
-Shard 2: includes all information related to orders, such as order date, purchased items, price and payment details
-Shard 3 or Shard 3: includes all information related to products, such as product name, description, price, images and inventory.
-
-With this method, we can assign each shard to a separate server and manage and optimize each type of data independently.
-
-For example, the shard related to clients can be assigned to a server with high speed and a lot of memory so that it can quickly respond to queries. While the shard related to products can be assigned to a server with more storage space so that it can store a large amount of images and information related to products.
-
-This method can significantly improve the performance and scalability of the database, especially for systems that store large amounts of different data.
-
-be a handful
 
 # DDD
 In software engineering, "Domain Driven Design" (DDD) is a design method introduced by Eric Evans. The goal of this method is to create a common understanding of the work area between programmers and strategists
@@ -410,7 +447,7 @@ Services
 - Order service: includes the logic of order registration, including inventory checking, payment processing and order confirmation.
 - Inventory service: including the logic of updating the inventory level, checking the inventory and renewing the inventory of books.
 
-# gRPC
+
 Let's learn gRPC very simply:
 
 What does gRPC mean?
