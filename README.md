@@ -341,12 +341,17 @@ Suppose you categorized your customers based on their location, for example, Nor
 >> `Apache` Kafka: Designed for high-throughput and distributed event streaming.
 >> `ActiveMQ`: An open-source, multi-protocol broker.
 >> `Amazon SQS`: A fully managed message queuing service by AWS.
-# ⭐ MasHti ⭐
 # CA,CP,AP
 c-->Consistency , A ---> Availability, P --->  Partition Tolerance
-1) Consistency --> This principle is pointing out that if you have several servers and have scaled it horizontally, all content in all servers must be the same. It means that no server is different from another
-2) Availability --> This word means that the entire system and servers must always be ready to serve requests and send an appropriate response for each request.
-3) Network outage or Partition Tolerance: Here it is saying that if, for example, the power of a server is cut off and there is a disturbance in the network, the system can continue on its way without any problems. Answer your client's needs and requests.
+1) Consistency -->
+* no different thing in any sevice
+* This principle is pointing out that if you have several servers and have scaled it horizontally, all content in all servers must be the same. It means that no server is different from another
+2) Availability --> 
+* all the service should be run
+* This word means that the entire system and servers must always be ready to serve requests and send an appropriate response for each request.
+3)  Partition Tolerance: 
+* if erectrec turn off it work vey nice
+* Here it is saying that if, for example, the power of a server is cut off and there is a disturbance in the network, the system can continue on its way without any problems. Answer your client's needs and requests.
 🔵 Choice of CA: Each request receives a valid response.
 🔵 CP selection: every time the client receives the information of the latest version.
 🔴 AP selection: the system can continue to work during network failure.
@@ -354,6 +359,7 @@ c-->Consistency , A ---> Availability, P --->  Partition Tolerance
 🔺👈 Important point: We never have CA in the real world because there is always a network outage.
 
 
+# ⭐ MasHti ⭐
 
 # Race Condition
 5 months ago
