@@ -36,9 +36,13 @@ sent directly to your web server.
 * A query language for APIs that allows clients to request exactly the data they need.
 * client can ask for specific data no more feching data
 ## SOAP(simple object access)
-* XML-based protocol with strict standards and it is good for enterprise application
-* it is good for financial and payment gateway because it is security and reliablitiy
-##  Event-Driven Architecture(webhook)
+* XML-based protocol with strict standards and it is good for enterprise application.
+* it is good for financial and payment gateway because it is security and reliablitiy.
+
+#  Event-Driven Architecture(message broker,message queue)
+* you have some service and each service comminucate with each other forexample user want to send email so we user service user --synchronous Communication--> service Communication with api : - slow because you have to wait until the response come and they are tight coupling
+so for handling this problem we have soulation EDA(Event-Driven Architecture) instead of our service commiunicated to each other between them we have a interface(broker,message broker)
++ producer,Broker,Consumer
 * Uses message brokers like RabbitMQ, Kafka, or Redis.
 
 
@@ -295,11 +299,12 @@ def schedule_async_db_write(user_id, activity):
 + can impelement a lot of cdn cloudefare has this service
 + request on server will less.
 
+# Nginx
+* Nginx is designed to handle high volumes of traffic with minimal resource usage.
+* it is `webservice` software and it is for `Reverse proxy` and `Load balancer `
 
-
-
-
-
+* it uses an event-driven, asynchronous architecture, making it much faster than traditional web servers like Apache.
+* `Static File Handling:`Nginx is optimized for serving static content like HTML, CSS, JavaScript, and images, making it an ideal choice for static websites.
 # sharding
 * Let me explain sharding to you simply. Suppose you have a hashtag #online_store with a lot of customer information, orders and products. As the number of users and purchases increases, this amount of information becomes too much for a single server and it cannot handle it well. Here is a cool solution called sharding.
 * In fact, sharding is a kind of partitioning in which the database is `divided into smaller and more convenient pieces called shards` . Each shard keeps a part of information and all shards together form the whole database. This makes the whole system faster and more manageable.
@@ -527,3 +532,12 @@ In fact, in the Serverless model, cloud service providers such as AWS, Azure and
  * Consider implementing the 12-factor app principles for cloud-native applications.
  7) ## BulkHead Pattern
  * if an issue occurs in one service, it should be isolated and not impact other services.
+
+
+
+ # Kubernetes
+ * create a infrastructure 
+ * it is a platform that help us managed our container.
+ * cluster ==> 1 or any server<node> each server called node
+ * in each cluster we have 1 or more node.
+ * in node we have a lot container
