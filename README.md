@@ -45,8 +45,87 @@ so for handling this problem we have soulation EDA(Event-Driven Architecture) in
 + producer,Broker,Consumer
 * Uses message brokers like RabbitMQ, Kafka, or Redis.
 
+# currency Request
+## Scenario
+* If a user has 1000 units of currency in their wallet and attempts to buy items that exceed their balance using multiple devices simultaneously, you need to handle this to avoid overdraws or inconsistencies in the wallet.
+`Unique Lock with Redis:`
 
+1) `MD5`: Each user is identified by a unique _id, which can be used to create a lock key in Redis. Using an MD5 hash is optional but can help obfuscate the _id if needed.
+This lock ensures that operations on the wallet for the user are atomic and prevent race conditions across multiple devices.
+
+2) `Flag` : Use the Redis SET command with the NX (set if not exists) option and an expiration time (EX) to lock the wallet for the duration of the operation. If the lock is successfully acquired, the operation can proceed; otherwise, it must wait or fail.
+ >> the NX flag is an option in Redis for the SET command, and it stands for "Set if Not Exists". It ensures that the key will only be set if it does not already exist in the Redis store.
+3) Validate and Update: While holding the lock, check if the user has sufficient balance for the requested transaction. If yes, process the transaction and update the balance.
+If the balance is insufficient or any rule is violated, the operation is aborted, and the lock is released.
+4) Release the Lock:
+Once the operation is complete (success or failure), the lock must be released to allow other operations for the user.
+
+```
+ const lockKey = this.getExchangeLockKeyOf(userId); // Generate a unique lock key for the user
+
+// Acquire a lock in Redis
+const acquireLock = (id: string): Promise<"OK" | null> => {
+  return new Promise((resolve) => {
+    this.redis
+      .set(lockKey, "locked", "EX", this.lockExpirationTime, "NX") // Set a lock with an expiration
+      .then((result) => {
+        resolve(result); // Result will be "OK" if the lock is acquired, null otherwise
+      });
+  });
+};
+
+const handleExchange = async (userId: string, amount: number) => {
+  const lock = await this.acquireLock(userId);
+
+  if (lock === "OK") {
+    try {
+      // Check and update the user's wallet balance atomically
+      const exchange = await this.exchangeModel.findOneAndUpdate(
+        {
+          _id: new Types.ObjectId(userId),
+          status: { $in: [ExchangeStatusEnum.InProgress] }, // Ensure the transaction is in progress
+          walletBalance: { $gte: amount }, // Check sufficient balance
+        },
+        {
+          $inc: { walletBalance: -amount }, // Deduct the amount from the wallet
+          status: ExchangeStatusEnum.Completed, // Mark transaction as completed
+        },
+        { new: true } // Return the updated document
+      );
+
+      if (!exchange) {
+        throw new Error("Insufficient balance or invalid transaction state");
+      }
+
+      // Successfully processed the exchange
+      return exchange;
+    } catch (error) {
+      // Handle error (e.g., log, notify, etc.)
+      throw error;
+    } finally {
+      // Release the lock in Redis
+      await this.redis.del(lockKey);
+    }
+  } else {
+    // If lock was not acquired, return an error or retry
+    throw new Error("Unable to acquire lock. Please try again.");
+  }
+};
+```
+* Also you can handle it in db layer() with redis ahndle on application layer
+
+```
+Criteria	Redis Locking	SQL Transactions
+Complexity	Requires Redis setup and additional locking logic	Built into the database
+Performance	Faster, as Redis operates in-memory	Slower due to database I/O and locking
+Distributed Systems	Works well in distributed architectures	Not ideal for multi-instance systems
+Atomicity	Managed at the application level	Guaranteed at the database level
+Scalability	Highly scalable	Limited by the database
+Lock Timeout	Risk of timeout if lock expires	No timeout, as transactions are managed by DB
+
+```
 # Socket Gateway
+
 * it is good for live-chat real-time gamiang
 A Socket Gateway is designed to manage real-time, bi-directional communication between clients and backend services using WebSocket or similar protocols.
 * Establishes a persistent connection for sending and receiving data in real time.
