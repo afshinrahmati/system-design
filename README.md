@@ -1,6 +1,13 @@
 # system-design
 * decided Architecture(Layered Architecture, Monolithic vs Microservices,Serverless,Containerized ) and Interfaces(API,..) , Infrastructure(Hosting,Database,Load Balancers,Caching) abd  Technology Stack(Monitoring & Logging,CI/CD Pipeline)
 * System design is the process of defining the elements of a system, as well as their interactions and relationships, in order to satisfy a set of specified requirements.
+# Agile-Methodology
+1) Plan 
+2) Design
+3) Develop
+4) Test 
+5) Deploy
+6) Review
 # Singleserversetup:
 ![Alt text](./single.png)
 1. Users access websites through domain names, such as api.mysite.com. Usually, the
