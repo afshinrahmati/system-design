@@ -613,6 +613,16 @@ In fact, in the Serverless model, cloud service providers such as AWS, Azure and
  * if an issue occurs in one service, it should be isolated and not impact other services.
 
 
+ # CI/CD
+ * CI continuous Integration ==> code small small ,  create a branch and can mergae and the delopay and build and test for each part in  daily build and test
+ * CD Continuous Delivery/Deployment ==> we can monitoring , after test and evely thing we can present
+ + we can deploay code very fast
+ * each part check with pipline
+ * automosion system with source controller manager in gitlab .
+ * Developer ---> Gitlab -CI-pipline-> Build ---> Test<unit test> --CD-> Deploay
+ * developer can maintain the code and this responsible not for operation and they create a tool that developer managed thir code
+ automaticly and it happend when mergrequest.
+ * Commit often<small Commit and deploay ment>,test often<small test and deploay ment>, fail often
 
  # Kubernetes
  * create a infrastructure 
